@@ -1,0 +1,10 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Experience Copier</title><link rel="stylesheet" href="popup.css"></head>
+<body><main class="panel"><h1>Experience Copier</h1><p class="subtitle">Existing Chrome session</p>
+<div id="state" class="state">Checking service…</div>
+<div class="buttons"><button id="startCapture" class="start">Start</button><button id="stopCapture" class="stop">Stop</button></div>
+<button id="bulk" class="bulk">Open Bulk Opener in new tab</button>
+<button id="export" class="export">Save / Refresh Excel</button>
+<section class="card"><h2>Keyword settings</h2><p class="hint">One keyword per line. Whole-word, case-insensitive matching.</p><textarea id="keywords" rows="4" placeholder="retired&#10;consultant&#10;self-employed"></textarea><button id="saveKeywords" class="export">Save Keywords</button></section>
+<div class="stats"><div><span id="count">—</span><small>Profiles saved</small></div><div><span id="file">profiles.xlsx</span><small>Excel workbook</small></div></div>
+<p id="message" role="status"></p><p class="hint">Start enables background capture. Open the Bulk Opener in its own tab to configure and manage a profile queue.</p></main><script src="config.js"></script><script src="popup.js"></script></body></html>
