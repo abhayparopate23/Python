@@ -1,0 +1,10 @@
+const $ = id => document.getElementById(id);
+async function send(type){return chrome.runtime.sendMessage({type});}
+async function refresh(){try{const s=await send("LI_COPIER_STATUS");$("state").textContent=s?.service?(s.enabled?"Capture is ON":"Capture is OFF"):"Python service offline";$("state").className=s?.service?(s.enabled?"state on":"state"):"state";$("startCapture").disabled=Boolean(s?.enabled);$("stopCapture").disabled=!s?.enabled;$("count").textContent=s?.service?`${s.service.count} unique`:"Offline";$("file").textContent=s?.service?.file||"profiles.xlsx";if(!s?.service){$("message").textContent="Start the local Python service before capture.";}else if(s.service.excel_error){$("message").textContent=`Excel update pending: ${s.service.excel_error}`;} }catch(e){$("message").textContent=`Extension/service error: ${e.message||e}`;}}
+chrome.storage.local.get({keywords:[]}).then(v=>{$("keywords").value=(v.keywords||[]).join("\n");});
+$("bulk").addEventListener("click",async()=>{await chrome.tabs.create({url:chrome.runtime.getURL("bulk.html")});window.close();});
+$("saveKeywords").addEventListener("click",async()=>{const keywords=[...new Set($("keywords").value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean))];await chrome.storage.local.set({keywords});$("message").textContent=`Saved ${keywords.length} keywords.`;});
+$("startCapture").addEventListener("click",async()=>{const r=await send("LI_COPIER_START");$("message").textContent=r?.ok?`Capture enabled. LinkedIn profile tabs found: ${r.tabsFound||0}.`:(r?.error||"Could not enable capture");refresh();});
+$("stopCapture").addEventListener("click",async()=>{await send("LI_COPIER_STOP");$("message").textContent="Capture stopped. Saved records remain.";refresh();});
+$("export").addEventListener("click",async()=>{$("message").textContent="Saving workbook…";try{const r=await send("LI_COPIER_EXPORT");$("message").textContent=r?.ok?`Workbook saved: ${r.result.file}`:`Could not save: ${r?.error||r?.result?.error||"Python service unavailable"}`;}catch(e){$("message").textContent=`Could not save: ${e.message||e}`;}refresh();});
+refresh();

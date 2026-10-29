@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bulk Opener · Experience Copier</title><link rel="stylesheet" href="bulk.css">
+</head>
+<body>
+<main class="page">
+  <header class="page-head"><div><p class="eyebrow">LINKEDIN EXPERIENCE COPIER</p><h1>Bulk Opener</h1><p class="subtitle">Prepare a profile list, choose how tabs open, and track the queue.</p></div><div id="serviceState" class="service-state">Checking local service…</div></header>
+  <section class="card">
+    <div class="section-head"><div><h2>Profiles to open</h2><p>Paste one LinkedIn profile URL per line. Emails, Report’s Job Titles, and Target Companies are optional and pair with links by row.</p></div></div>
+    <div class="input-grid">
+      <div class="field"><label for="linksInput">LinkedIn profile links <span id="linkCount">0 profiles</span></label><textarea id="linksInput" rows="12" spellcheck="false" placeholder="https://www.linkedin.com/in/person-a/&#10;https://www.linkedin.com/in/person-b/"></textarea><small>Only individual profiles under linkedin.com/in/ are accepted.</small></div>
+      <div class="field"><label for="emailsInput">Emails <span id="emailCount">Optional</span></label><textarea id="emailsInput" rows="12" spellcheck="false" placeholder="person.a@example.com&#10;&#10;person.c@example.com"></textarea><small>Line 1 pairs with profile 1. A blank line leaves that profile’s email empty.</small></div>
+      <div class="field"><label for="jobTitlesInput">Report’s Job Titles <span id="jobTitleCount">Optional</span></label><textarea id="jobTitlesInput" rows="12" spellcheck="false" placeholder="Senior Product Manager&#10;Software Engineer"></textarea><small>Optional. One title per profile row; leave a blank line to skip matching for that profile.</small></div>
+      <div class="field"><label for="targetCompaniesInput">Target Company <span id="targetCompanyCount">Optional</span></label><textarea id="targetCompaniesInput" rows="12" spellcheck="false" placeholder="Acme Inc.&#10;Example Corp."></textarea><small>Optional. One target company per profile row; leave a blank line to skip validation for that profile.</small></div>
+    </div>
+    <div id="countCheck" class="count-check">Paste profile links to preview the list.</div><div id="preview" class="preview" hidden></div>
+  </section>
+  <section class="card">
+    <div class="section-head"><div><h2>Opening options</h2><p>Choose the pace and what to do with tabs that are already open.</p></div></div>
+    <div class="options-grid">
+      <div class="field"><label for="worksheetSelect">Destination worksheet</label><select id="worksheetSelect"><option value="Profiles" selected>Profiles (default)</option><option value="__new__">Create a new worksheet…</option></select><small>Duplicates are checked only in the chosen destination sheet. Leave Profiles selected to use the default sheet.</small></div>
+      <div class="field" id="newSheetField" hidden><label for="newSheetName">New worksheet name</label><input id="newSheetName" type="text" maxlength="31" placeholder="e.g. Batch 24 Oct"><small>Only created when selected above.</small></div>
+      <div class="field"><label for="outputName">Output workbook name</label><input id="outputName" type="text" value="profiles.xlsx" placeholder="profiles.xlsx"><small>Saved in the project folder.</small></div>
+      <div class="field"><label for="delay">Delay between tabs</label><div class="input-suffix"><input id="delay" type="number" min="3" max="60" step="1" value="3"><span>seconds</span></div><small>Choose from 3 to 60 seconds.</small></div>
+      <div class="field"><label for="tabMode">Existing profile tabs</label><select id="tabMode"><option value="new">Open a new tab for each profile</option><option value="reuse">Reuse a matching profile tab</option></select><small>Opens the first profile normally; later profiles open in the background at the selected interval.</small></div>
+      <div class="field auto-mode-field"><label for="autoMode">Auto Mode</label><label class="switch-row"><input id="autoMode" type="checkbox" role="switch"><span class="switch"></span><span>Scroll, capture, save, then close</span></label><small>Processes one profile at a time in background tabs, so you can keep using your current tab. Auto Mode opens and closes only its own batch tabs.</small></div>
+    </div>
+  </section>
+  <section class="card">
+    <div class="section-head queue-head"><div><h2>Queue</h2><p id="queueSummary">No batch loaded yet.</p></div><div id="queueState" class="queue-state">Idle</div></div>
+    <div class="actions"><button id="startBulk" class="button primary" disabled>Start opening</button><button id="pauseBulk" class="button secondary" disabled>Pause</button><button id="resumeBulk" class="button secondary" disabled>Resume</button><button id="stopBulk" class="button danger" disabled>Stop</button><button id="clearForm" class="button ghost">Clear form</button></div>
+    <p id="message" class="message" role="status"></p>
+    <div class="table-wrap"><table><thead><tr><th>#</th><th>Profile</th><th>Email</th><th>Report’s Job Title</th><th>Target Company</th><th>Status</th></tr></thead><tbody id="queueRows"><tr><td colspan="6" class="empty-row">Your profile queue will appear here.</td></tr></tbody></table></div>
+    <p class="footnote">After the first profile, the currently focused tab stays selected while later profiles open in the background. A LinkedIn 404 redirect is recorded as Invalid Link and does not stop the queue.</p>
+  </section>
+</main>
+<script src="config.js"></script><script src="bulk.js"></script>
+</body></html>
